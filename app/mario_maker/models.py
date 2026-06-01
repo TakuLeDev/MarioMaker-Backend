@@ -3,11 +3,23 @@ from django.conf import settings
 from uuid import uuid4
 
 # Create your models here.
-class Player(models.Model):
+class User(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,)
+    name = models.CharField(max_length=20, null=False, default="1")
+    hash_pswrd = models.CharField(max_length=255, null=False, default="2")
+
+    follows = models.ManyToManyField("self",)
+
+    creation_date = models.DateField(auto_now_add=true)
 
     def __str__(self):
-        return self.user.username
-    
+        return self.name
+
+class Level(models.Model):
+        id = models.IntegerField(primary_key=True, default=uuid4, editable=False)
+
+        name = models.CharField(max_length=255, null=False, default="3")
+        json = models.JSONField()
+        owner = models.ForeignKey(User, on_delete=models.CASCADE)
+

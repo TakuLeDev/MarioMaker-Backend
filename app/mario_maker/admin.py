@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Player
+from .models import User
 
 # Register your models here.
-@admin.register(Player)
+@admin.register(User)
 class PlayerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', )
+    list_display = ('id', 'name', )
 
-    search_fields =('user', )
+    search_fields =('name', )
