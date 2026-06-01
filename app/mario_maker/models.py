@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 from uuid import uuid4
 
 # Create your models here.
@@ -9,9 +10,9 @@ class User(models.Model):
     name = models.CharField(max_length=20, null=False, default="1")
     hash_pswrd = models.CharField(max_length=255, null=False, default="2")
 
-    follows = models.ManyToManyField("self",)
+    follows = models.ManyToManyField("self", related_name="user_follows")
 
-    creation_date = models.DateField(auto_now_add=true)
+    creation_date = models.DateField(default=timezone.now)
 
     def __str__(self):
         return self.name

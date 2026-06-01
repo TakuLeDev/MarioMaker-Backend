@@ -6,4 +6,4 @@ from .models import User
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', )
 
-    search_fields =('name', )
+    search_fields =('name', 'id')
