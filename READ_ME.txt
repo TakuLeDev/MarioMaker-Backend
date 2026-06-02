@@ -10,5 +10,13 @@ python manage.py runserver;
 
 ===================================================================
 
+MODIF DU MODEL:
+
 python manage.py makemigrations mario_maker;
 python manage.py migrate;
+
+===================================================================
+
+EN CAS DE TYPE MISSMATCH
+
+python manage.py flush
