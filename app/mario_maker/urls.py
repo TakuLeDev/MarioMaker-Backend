@@ -3,17 +3,30 @@ from .views import *
 
 urlpatterns = [
 
-    #region user
+    # =========================
+    # Users
+    # =========================
 
-    path('user/get_name/<str:name>', get_user, name='get_user'),
-    path('user/signin', user_signin, name='user_signin'),
-    path('user/get_pk/<int:pk>', user_detail, name='user_detail'),
+    path('users/<str:name>/', get_user, name='get_user'),
 
-    #endregion
+    path('users/signin/', user_signin, name='user_signin'),
+    path('users/login/', user_login, name='user_login'),
+    path('users/logout/', user_logout, name='user_logout'),
 
-    #region level
+    path('users/<int:pk>/', user_detail, name='user_detail'),
+    path('users/<int:pk>/delete/', delete_user, name='delete_user'),
 
-    path('levels/level/create', create_level, name='create_level'),
+    # =========================
+    # Levels
+    # =========================
 
-    #endregion
+    path('levels/', create_level, name='create_level'),
+
+    path('levels/latest/<int:nmbr>/', get_level_infos, name='get_level_infos'),
+
+    path('levels/<int:id>/json/', get_level_json, name='get_level_json'),
+
+    path('levels/<int:lvl_id>/update/', update_level, name='update_level'),
+
+    path('levels/<int:lvl_id>/delete/', delete_level, name='delete_level'),
 ]

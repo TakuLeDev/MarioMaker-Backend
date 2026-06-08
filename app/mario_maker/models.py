@@ -9,14 +9,13 @@ from uuid import uuid4
 class Player(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
 
-    #follows = models.ManyToManyField("self", related_name="user_follows", null=True)
-
-    creation_date = models.DateField(auto_now_add=True, auto_now=False)
+    #follows = models.ManyToManyField("self", blank=True)
 
 class Level(models.Model):
-        id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
 
-        name = models.CharField(max_length=255, null=False, default="3")
-        json = models.JSONField()
-        owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, null=False, default="3")
+    json = models.JSONField()
+    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    creation_date = models.DateField(auto_now_add=True)
 
