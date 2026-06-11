@@ -16,6 +16,6 @@ class Level(models.Model):
 
     name = models.CharField(max_length=255, null=False, default="3")
     json = models.JSONField()
-    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    owner = models.ForeignKey(get_user_model(), on_delete=models.RESTRICT)
     creation_date = models.DateField(auto_now_add=True)
 

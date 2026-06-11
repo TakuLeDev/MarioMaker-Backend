@@ -19,18 +19,31 @@ def get_user(request, name):
     serialized_data = PlayerSerializer(user).data
     return Response(serialized_data)
 
-
+#works
 @api_view(['POST'])
 def user_signin(request):
+
     serializer = PlayerSerializer(data=request.data)
 
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_201_CREATED)
+    
+    username = request.data.get("username")
+    password = request.data.get("password")
+
+    user = authenticate(
+        request,
+        username=username,
+        password=password
+    )
+
+    if user is not None:
+        login(request, user)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+#works
 @api_view(['POST'])
 def user_login(request):
 
@@ -56,13 +69,13 @@ def user_login(request):
         status=status.HTTP_401_UNAUTHORIZED
     )
 
+#works
 @api_view(['POST'])
 def user_logout(request):
     logout(request)
     return Response({"message": "Logged out"})
     
-
-@api_view(['PUT'])
+@api_view(['GET'])
 def user_detail(request, pk):
     try:
         user = Player.objects.get(pk=pk)
@@ -74,6 +87,7 @@ def user_detail(request, pk):
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+#works
 @api_view(['DELETE'])
 def delete_user(request, pk):
     try:
@@ -92,7 +106,7 @@ def delete_user(request, pk):
 def create_level(request):
     serializer = LevelSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        serializer.save(owner=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -103,10 +117,14 @@ def get_level_infos(request, nmbr):
             {"error": "nmbr must be positive"},
             status=status.HTTP_400_BAD_REQUEST,
         )
-    try:
+    
+    user_id = request.GET.get("user_id")
+    
+    if user_id == None:
         level = Level.objects.order_by("-creation_date")[:nmbr]
-    except:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    else:
+        level = Level.objects.filter(owner=user_id).order_by("-creation_date")[:nmbr]
+
     serialized_data = LevelInfoSerializer(level, many=True).data
     return Response(serialized_data)
         
@@ -126,14 +144,13 @@ def update_level(request, lvl_id):
     except Level.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    level.json = request.data.get("json")
+    level.json = request.data["json"]
     level.save()
 
     return Response(
         {"message": "Level updated"},
         status=status.HTTP_200_OK
     )
-        
 
 @api_view(['DELETE'])
 def delete_level(request, lvl_id):
@@ -146,4 +163,4 @@ def delete_level(request, lvl_id):
 
     return Response(status=status.HTTP_204_NO_CONTENT)
 
-    #endregion
+#endregion
