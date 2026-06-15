@@ -115,3 +115,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = './static'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}

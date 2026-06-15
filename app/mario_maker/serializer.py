@@ -10,6 +10,7 @@ class PlayerSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "password": {"write_only": True}
         }
+        read_only_fields = ("id",)
 
     def create(self, validated_data):
         user = Player.objects.create_user(
@@ -21,8 +22,9 @@ class PlayerSerializer(serializers.ModelSerializer):
 
 class LevelSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Level
+        model = Level
         fields = ("id", "name", "json", "owner", "creation_date")
+        read_only_fields = ("owner", "creation_date", "id")
 
 class LevelInfoSerializer(serializers.ModelSerializer):
     class Meta:
